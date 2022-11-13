@@ -1,13 +1,13 @@
 class Event < ApplicationRecord
   belongs_to :owner, class_name: "User"
-  has_many :tickets
-  
+  has_many :tickets, dependent: :destroy
+
   validates :name, length: { maximum: 50 }, presence: true
   validates :place, length: { maximum: 100 }, presence: true
   validates :content, length: { maximum: 2000 }
-  validates :start_at, presence: true
   validates :end_at, presence: true
   validate :start_at_should_be_before_end_at
+  validates :start_at, presence: true
 
   def created_by?(user)
     owner_id === user.id
